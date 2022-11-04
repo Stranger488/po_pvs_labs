@@ -1,14 +1,11 @@
 package pvs.labs.lab1.model.graph;
 
-import java.util.ArrayList;
-
 public class Graph {
     private int graphSize = 0;
     private int edges = 0;
     private int totalMessages = 0;
     GraphNode[] graphNodes;
     private final boolean[][] adjMatrix;
-    private int iterations = 0;
 
     public Graph(int size) {
         this.graphSize = size + 1;
@@ -27,21 +24,10 @@ public class Graph {
         this.edges++;
     }
 
-    public void resetGraph() {
-        System.out.println("Graph [] has been reset");
-        this.totalMessages = 0;
-        this.iterations = 0;
-        for (GraphNode n : this.graphNodes) {
-            n.resetNode();
-        }
+    public boolean[][] getAdjMatrix() {
+        return adjMatrix;
     }
 
-    /**
-     * Fires echo on Node with value == val.
-     * Then increment father's token.
-     *
-     * @param val is the value of the Node
-     */
     public void echo(int val) {
         GraphNode curNode = this.graphNodes[val];
         if (curNode.echo()) {
@@ -52,22 +38,8 @@ public class Graph {
         }
     }
 
-    /**
-     * If all nodes are visited on the graph start sending tokens
-     *
-     * @return true if nodes must send the tokens to their parent
-     * <p>
-     * public boolean hasStartedEcho() {
-     * return (this.totalMessages == this.graphSize);
-     * }
-     */
-
     public GraphNode[] getNodesInfo() {
         return this.graphNodes;
-    }
-
-    public boolean[][] getAdjMatrix() {
-        return this.adjMatrix;
     }
 
     public int getGraphSize() {
@@ -117,36 +89,28 @@ public class Graph {
         System.out.println("____");
     }
 
-    public ArrayList<Integer> sentMessagesToNeighbors(int father) {
-        ArrayList<Integer> children = new ArrayList<Integer>();
+    public void sendMessagesToNeighbors(int father) {
         for (int n = 0; n < this.graphSize; n++) {
-            if (n == graphNodes[father].getFather()) continue;
+            // Если текущая вершина - это родительская к рассматриваемой, то пропустить
+            if (n == graphNodes[father].getFather())
+                continue;
+
+            // Если текущая вершина и рассматриваемая связаны
             if (adjMatrix[father][n]) {
-                this.totalMessages++;
-                GraphNode neigh = this.graphNodes[n];
-                if (neigh.getFather() < -1) {
-                    neigh.setFather(father);
-                    children.add(n);
+                totalMessages++;
+
+                // Если у текущей вершины нет родителя (father == -2)
+                if (graphNodes[n].getFather() == -2) {
+                    // Сделать рассматриваемую вершину родителем текущей
+                    graphNodes[n].setFather(father);
                 } else {
-                    graphNodes[father].sentToken(neigh);
+                    // Если у текущей вершины есть родитель
+                    graphNodes[father].sendToken(graphNodes[n]);
                 }
             }
         }
 
-		/*
-		 * First set ALL children to the father
-		 * and then check if the children can start echo
-
-		for (int n : children) {
-			this.checkForUnexploredNeighbors(n);
-		}*/
-
         this.graphNodes[father].setVisited();
-        return children;
-    }
-
-    public void setIterations(int i) {
-        iterations = i;
     }
 
 }

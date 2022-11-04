@@ -26,10 +26,7 @@ public class UseAlgorithm {
         graph.printAdjMatrix();
 
         EchoWaveAlgorithm echo = new EchoWaveAlgorithm();
-        while (echo.executeEchoWave(graph)) {
-            echo.doubleVariableK();
-            graph.resetGraph();
-        }
+        echo.executeEchoWave(graph);
 
         System.out.println(graph);
     }
