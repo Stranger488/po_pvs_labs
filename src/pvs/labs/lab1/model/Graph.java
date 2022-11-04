@@ -1,11 +1,14 @@
-package pvs.labs.lab1.model.graph;
+package pvs.labs.lab1.model;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class Graph {
-    private int graphSize = 0;
-    private int edges = 0;
-    private int totalMessages = 0;
+    private int graphSize;
+    private int edges;
+    private int totalMessages;
     GraphNode[] graphNodes;
-    private final boolean[][] adjMatrix;
+    private boolean adjMatrix[][];
 
     public Graph(int size) {
         this.graphSize = size + 1;
@@ -22,10 +25,7 @@ public class Graph {
         adjMatrix[j][i] = true;
         graphNodes[j].incrementNeighbors();
         this.edges++;
-    }
 
-    public boolean[][] getAdjMatrix() {
-        return adjMatrix;
     }
 
     public void echo(int val) {
@@ -42,6 +42,10 @@ public class Graph {
         return this.graphNodes;
     }
 
+    public boolean[][] getAdjMatrix() {
+        return this.adjMatrix;
+    }
+
     public int getGraphSize() {
         return this.graphSize;
     }
@@ -55,62 +59,63 @@ public class Graph {
     }
 
     public void printAdjMatrix() {
-        for (int i = 0; i < this.graphSize; i++) {
+        for (int i = 0 ; i < this.graphSize; i++) {
             System.out.print("______");
         }
         System.out.print(" {Adjacency Matrix} ");
-        for (int i = 0; i < this.graphSize; i++) {
+        for (int i = 0 ; i < this.graphSize; i++) {
             System.out.print("______");
         }
 
         System.out.print("_\n|  N     ");
-        for (int i = 0; i < this.graphSize; i++) {
+        for (int i = 0 ; i < this.graphSize; i++) {
             int indexSpace = (i == 0) ? 1 : (int) (Math.log10(i) + 1);
             System.out.print("|    (" + i + ")");
-            for (int k = indexSpace; k <= 4; k++) System.out.print(" ");
+            for (int k = indexSpace ; k <= 4 ; k++) System.out.print(" ");
             System.out.print("|");
         }
         System.out.print("\n");
         System.out.print("|        |");
         System.out.print("\n");
-        for (int i = 0; i < this.adjMatrix.length; i++) {
+        for (int i = 0 ; i < this.adjMatrix.length ; i++) {
             int indexSpace = (i == 0) ? 1 : (int) (Math.log10(i) + 1);
-            System.out.print("| (" + (i) + ")");
-            for (int k = indexSpace; k <= 4; k++) System.out.print(" ");
-            for (int j = 0; j < this.adjMatrix.length; j++) {
+            System.out.print("| (" + (i) +")");
+            for (int k = indexSpace ; k <= 4 ; k++) System.out.print(" ");
+            for (int j = 0 ; j < this.adjMatrix.length ; j++) {
                 System.out.print("|     " + (this.adjMatrix[i][j] ? 1 : 0) + "     |");
             }
             System.out.print("\n");
         }
 
-        for (int i = 0; i < this.graphSize; i++) {
+        for (int i = 0 ; i < this.graphSize; i++) {
             System.out.print("_________");
         }
         System.out.println("____");
     }
 
-    public void sendMessagesToNeighbors(int father) {
-        for (int n = 0; n < this.graphSize; n++) {
-            // Если текущая вершина - это родительская к рассматриваемой, то пропустить
-            if (n == graphNodes[father].getFather())
-                continue;
+    public String toString() {
+        return "Graph has "+this.edges+" total edges and "+ this.totalMessages +" total sent messages";
+    }
 
-            // Если текущая вершина и рассматриваемая связаны
+    public List<Integer> sentMessagesToNeighbors(int father) {
+        List<Integer> children = new ArrayList<Integer>();
+        for (int n = 0 ; n < this.graphSize ; n++) {
+            if (n == graphNodes[father].getFather()) continue;
             if (adjMatrix[father][n]) {
-                totalMessages++;
-
-                // Если у текущей вершины нет родителя (father == -2)
-                if (graphNodes[n].getFather() == -2) {
-                    // Сделать рассматриваемую вершину родителем текущей
-                    graphNodes[n].setFather(father);
+                this.totalMessages++;
+                GraphNode neigh = this.graphNodes[n];
+                if (neigh.getFather() < -1) {
+                    neigh.setFather(father);
+                    children.add(n);
                 } else {
-                    // Если у текущей вершины есть родитель
-                    graphNodes[father].sendToken(graphNodes[n]);
+                    graphNodes[father].sentToken(neigh);
                 }
             }
         }
 
+
         this.graphNodes[father].setVisited();
+        return children;
     }
 
 }

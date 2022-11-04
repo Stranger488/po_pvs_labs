@@ -1,6 +1,6 @@
 package pvs.labs.lab1;
 
-import pvs.labs.lab1.model.graph.Graph;
+import pvs.labs.lab1.model.Graph;
 
 import java.util.Arrays;
 import java.util.List;
@@ -8,7 +8,6 @@ import java.util.List;
 public class UseAlgorithm {
 
     public static void main(String[] args) {
-
         List<String> graphStructureSimple = List.of(
                 "0 1",
                 "0 2",
