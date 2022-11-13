@@ -1,19 +1,18 @@
 package pvs.labs.lab1.model;
 
-public class GraphNode {
+import pvs.labs.model.GraphNode;
+
+public class EchoGraphNode extends GraphNode {
 	private int father; // -2 - not set
 						// -1 - root
-	private int totalNeigh, receivedTokens, value;
-	private boolean visited, // yes : This node has been expanded. If eligible can sent token back to his father
-							// no  : This node has not been "discovered" yet in the graph.
-					tokenSent;
+	private int totalNeigh, receivedTokens;
+	private boolean tokenSent;
 
-	GraphNode(int val) {
+	public EchoGraphNode(int val) {
+		super(val);
 		this.father = -2;
 		this.totalNeigh = 0;
 		this.receivedTokens = 0;
-		this.value = val;
-		this.visited = false;
 		this.tokenSent = false;
 	}
 
@@ -38,13 +37,9 @@ public class GraphNode {
 				+ "New total of " + this.receivedTokens + "/" + this.totalNeigh);
 	}
 
-	public void sentToken(GraphNode val) {
+	public void sentToken(EchoGraphNode val) {
 		System.out.println("[GRAPH_STRUCTURE]: "+ this.value + " has sent token to neighbor " + val.getValue());
 		val.receiveToken();
-	}
-
-	private int getValue() {
-		return this.value;
 	}
 
 	public void sentToken() {
@@ -68,10 +63,6 @@ public class GraphNode {
 		this.father = val;
 	}
 
-	public void setVisited() {
-		this.visited = true;
-	}
-
 	public int getFather() {
 		return this.father;
 	}
@@ -80,24 +71,7 @@ public class GraphNode {
 		return this.visited;
 	}
 	public boolean hasFather() {
-		if (this.father >= -1 ) return true;
-		else return false;
-	}
-
-	/**
-	 * Set this Node eligible to send tokens to its father.
-	 */
-	public void setForEcho() {
-		this.visited = true;
-		this.receivedTokens = this.totalNeigh - 1;
-		System.out.println("[GRAPH_STRUCTURE]: Node " + this.value + " can start sending tokens");
-	}
-
-	public void resetNode() {
-		this.father = -2;
-		this.receivedTokens = 0;
-		this.visited = false;
-		this.tokenSent = false;
+		return this.father >= -1;
 	}
 
 	@Override
