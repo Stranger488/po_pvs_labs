@@ -53,7 +53,7 @@ public class EchoGraph extends Graph {
             if (adjMatrix[father][n]) {
                 this.totalMessages++;
                 EchoGraphNode neigh = (EchoGraphNode) this.graphNodes[n];
-                if (neigh.getFather() < -1) {
+                if (!neigh.hasFather()) {
                     neigh.setFather(father);
                 } else {
                     fatherGraphNode.sentToken(neigh);

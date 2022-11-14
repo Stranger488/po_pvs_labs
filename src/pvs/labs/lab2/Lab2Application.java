@@ -11,7 +11,6 @@ public class Lab2Application {
     public static void main(String[] args) {
         List<String> graphStructureSimple = List.of(
                 "0 1",
-                "1 0",
                 "0 2",
                 "0 3",
                 "1 4",
@@ -19,10 +18,12 @@ public class Lab2Application {
                 "2 6",
                 "3 7",
                 "6 8",
-                "7 9"
+                "7 9",
+                "4 0",
+                "9 3"
         );
 
-        Graph graph = Utils.readGraphLine(new FinnGraph(graphStructureSimple.size()), graphStructureSimple);
+        Graph graph = Utils.readGraphLine(new FinnGraph(10), graphStructureSimple);
         graph.printAdjMatrix();
 
         var finn = new FinnWaveAlgorithm();

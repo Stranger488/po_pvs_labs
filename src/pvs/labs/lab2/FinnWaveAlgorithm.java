@@ -12,13 +12,12 @@ import java.util.stream.Stream;
 public class FinnWaveAlgorithm {
 
     public void executeEchoFinn(Graph g, Integer start) {
-        List<List<Integer>> Inc = new ArrayList<>();
-        List<List<Integer>> NInc = new ArrayList<>();
+        List<Set<Integer>> Inc = new ArrayList<>();
+        List<Set<Integer>> NInc = new ArrayList<>();
         List<List<Map.Entry<Integer, Boolean>>> rec = new ArrayList<>();
         for (var i = 0; i < g.getGraphSize(); i++) {
-            Inc.add(List.of(g.getGraphNodes()[i].getValue()));
-            NInc.add(List.of());
-
+            Inc.add(Set.of(g.getGraphNodes()[i].getValue()));
+            NInc.add(Set.of());
 
             List<Map.Entry<Integer, Boolean>> r = new ArrayList<>();
             for (var e : g.getPredecessors(i)) {
@@ -46,15 +45,10 @@ public class FinnWaveAlgorithm {
                 }
 
                 for (var node : finnNode.getNodesFrom()) {
-                    List<Integer> IncNew = Stream.concat(
-                                    Inc.get(j).stream(),
-                                    Inc.get(node).stream()
-                            ).distinct().collect(Collectors.toList());
-
-                    List<Integer> NIncNew = Stream.concat(
-                                    NInc.get(j).stream(),
-                                    NInc.get(node).stream()
-                            ).distinct().collect(Collectors.toList());
+                    Set<Integer> IncNew = Stream.concat(Inc.get(j).stream(), Inc.get(node).stream())
+                            .collect(Collectors.toSet());
+                    Set<Integer> NIncNew = Stream.concat(NInc.get(j).stream(), NInc.get(node).stream())
+                            .collect(Collectors.toSet());
 
                     rec.get(j).stream()
                             .filter(el -> node.equals(el.getKey()))
@@ -66,11 +60,7 @@ public class FinnWaveAlgorithm {
                         NIncNew.add(j);
                     }
 
-                    List<Integer> IncNewSorted = getSortedList(IncNew);
-                    List<Integer> NIncNewSorted = getSortedList(NIncNew);
-                    List<Integer> IncJSorted = getSortedList(Inc.get(j));
-                    List<Integer> NIncJSorted = getSortedList(NInc.get(j));
-                    if (!IncNewSorted.equals(IncJSorted) || !NIncNewSorted.equals(NIncJSorted)) {
+                    if (!IncNew.equals(Inc.get(j)) || !NIncNew.equals(NInc.get(j))) {
                         ((FinnGraph) g).sentMessagesToNeighbors(j);
                     }
 
@@ -79,9 +69,7 @@ public class FinnWaveAlgorithm {
                 }
                 finnNode.getNodesFrom().clear();
 
-                List<Integer> IncSorted = getSortedList(Inc.get(initiator));
-                List<Integer> NIncSorted = getSortedList(NInc.get(initiator));
-                if (IncSorted.equals(NIncSorted)) {
+                if (Inc.get(j).equals(NInc.get(j))) {
                     isEnd = true;
                     break;
                 }
@@ -93,10 +81,7 @@ public class FinnWaveAlgorithm {
 
         System.out.println(Arrays.toString(Inc.toArray()));
         System.out.println(Arrays.toString(NInc.toArray()));
-    }
-
-    private List<Integer> getSortedList(List<Integer> IncNew) {
-        return IncNew.stream().sorted().collect(Collectors.toList());
+        System.out.println("Decision is made!");
     }
 
 }

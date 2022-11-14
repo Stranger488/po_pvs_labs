@@ -22,7 +22,7 @@ public class Lab1Application {
                 "7 10"
         );
 
-        Graph echoGraph = Utils.readGraphLine(new EchoGraph(rawGraph.size()), rawGraph);
+        Graph echoGraph = Utils.readGraphLine(new EchoGraph(11), rawGraph);
         echoGraph.printAdjMatrix();
 
         var echo = new EchoWaveAlgorithm();

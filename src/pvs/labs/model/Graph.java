@@ -26,7 +26,7 @@ public abstract class Graph {
     }
 
     public Graph(int size) {
-        this.graphSize = size + 1;
+        this.graphSize = size;
         adjMatrix = new boolean[this.graphSize][this.graphSize];
         graphNodes = new GraphNode[this.graphSize];
         for (int i = 0; i < this.graphSize; i++) {
