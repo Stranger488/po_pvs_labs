@@ -30,6 +30,4 @@ public class Lab2Application {
         finn.executeEchoFinn(graph, 0);
     }
 
-
-
 }

@@ -3,6 +3,8 @@ package pvs.labs.lab2.model;
 import pvs.labs.model.Graph;
 import pvs.labs.model.GraphNode;
 
+import java.util.List;
+
 public class FinnGraph extends Graph {
 
     public FinnGraph(int size) {
@@ -12,6 +14,11 @@ public class FinnGraph extends Graph {
     @Override
     public GraphNode createGraphNode(int val) {
         return new FinnGraphNode(val);
+    }
+
+    @Override
+    public void setPredSubGraphNode(int val, List<GraphNode> predecessors, List<GraphNode> successors) {
+
     }
 
     @Override

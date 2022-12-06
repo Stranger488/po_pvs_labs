@@ -21,7 +21,7 @@ public class FinnWaveAlgorithm {
 
             List<Map.Entry<Integer, Boolean>> r = new ArrayList<>();
             for (var e : g.getPredecessors(i)) {
-                r.add(new AbstractMap.SimpleEntry<>(e, Boolean.FALSE));
+                r.add(new AbstractMap.SimpleEntry<>(e.getValue(), Boolean.FALSE));
             }
             rec.add(r);
         }

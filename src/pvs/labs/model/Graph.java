@@ -29,12 +29,21 @@ public abstract class Graph {
         this.graphSize = size;
         adjMatrix = new boolean[this.graphSize][this.graphSize];
         graphNodes = new GraphNode[this.graphSize];
+    }
+
+    public void initGraph() {
         for (int i = 0; i < this.graphSize; i++) {
             graphNodes[i] = createGraphNode(i);
+        }
+
+        for (int i = 0; i < this.graphSize; i++) {
+            setPredSubGraphNode(i, getPredecessors(i), getSuccessors(i));
         }
     }
 
     public abstract GraphNode createGraphNode(int val);
+
+    public abstract void setPredSubGraphNode(int val, List<GraphNode> predecessors, List<GraphNode> successors);
 
     public void addEdge(int i, int j) {
         adjMatrix[i][j] = true;
@@ -78,22 +87,19 @@ public abstract class Graph {
     }
 
     public List<GraphNode> getSuccessors(int val) {
-        List<GraphNode> successors = new ArrayList<>();
-        for (var i = 0; i < graphSize; i++) {
-            boolean isConnected = this.adjMatrix[val][i];
-            if (isConnected) {
-                successors.add(graphNodes[i]);
-            }
-        }
-        return successors;
+        return getConnectedNodes(val, true);
     }
 
-    public List<Integer> getPredecessors(int val) {
-        List<Integer> predecessors = new ArrayList<>();
+    public List<GraphNode> getPredecessors(int val) {
+        return getConnectedNodes(val, false);
+    }
+
+    private List<GraphNode> getConnectedNodes(int val, boolean isOut) {
+        List<GraphNode> predecessors = new ArrayList<>();
         for (var i = 0; i < graphSize; i++) {
-            boolean isConnected = this.adjMatrix[i][val];
+            boolean isConnected = isOut ? this.adjMatrix[val][i] : this.adjMatrix[i][val];
             if (isConnected) {
-                predecessors.add(i);
+                predecessors.add(graphNodes[i]);
             }
         }
         return predecessors;

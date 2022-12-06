@@ -18,6 +18,11 @@ public class EchoGraph extends Graph {
         return new EchoGraphNode(val);
     }
 
+    @Override
+    public void setPredSubGraphNode(int val, List<GraphNode> predecessors, List<GraphNode> successors) {
+
+    }
+
     public void addEdge(int i, int j) {
         adjMatrix[i][j] = true;
         ((EchoGraphNode) graphNodes[i]).incrementNeighbors();
