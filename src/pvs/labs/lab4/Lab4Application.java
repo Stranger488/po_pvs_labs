@@ -1,14 +1,15 @@
-package pvs.labs.lab3;
+package pvs.labs.lab4;
 
+import pvs.labs.lab3.ParallelPhaseWaveAlgorithm;
 import pvs.labs.lab3.model.PhaseGraph;
+import pvs.labs.lab4.model.LiGraph;
 import pvs.labs.model.Graph;
 import pvs.labs.utils.Utils;
 
-import java.lang.reflect.Field;
 import java.util.List;
 import java.util.Map;
 
-public class Lab3Application {
+public class Lab4Application {
 
     static class GraphInput {
         List<String> graph;
@@ -54,7 +55,7 @@ public class Lab3Application {
     public static void main(String[] args) {
         GraphInput graphInput = graphs.get(args[0]);
         Graph graph = Utils.readGraphLine(
-                new PhaseGraph(graphInput.size, graphInput.D),
+                new LiGraph(graphInput.size, graphInput.D),
                 graphInput.graph
         );
         graph.initGraph();

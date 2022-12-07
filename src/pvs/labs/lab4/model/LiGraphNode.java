@@ -1,4 +1,4 @@
-package pvs.labs.lab3.model;
+package pvs.labs.lab4.model;
 
 import pvs.labs.model.Graph;
 import pvs.labs.model.GraphNode;
@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
-public class PhaseGraphNode extends GraphNode implements Runnable {
+public class LiGraphNode extends GraphNode implements Runnable {
 
     private final int D;
 
@@ -45,7 +45,7 @@ public class PhaseGraphNode extends GraphNode implements Runnable {
         return recCount;
     }
 
-    public PhaseGraphNode(Graph graph, int size, int D) {
+    public LiGraphNode(Graph graph, int size, int D) {
         super(size);
         this.D = D;
         this.graph = graph;
@@ -53,7 +53,7 @@ public class PhaseGraphNode extends GraphNode implements Runnable {
 
     @Override
     public void run() {
-        if (((PhaseGraph) graph).getInitiator() == this.getValue() && !isInitiated) {
+        if (((LiGraph) graph).getInitiator() == this.getValue() && !isInitiated) {
             runMain();
             isInitiated = true;
         }

@@ -1,13 +1,14 @@
-package pvs.labs.lab3.model;
+package pvs.labs.lab4.model;
 
 import pvs.labs.model.Graph;
 import pvs.labs.model.GraphNode;
 import pvs.labs.model.Message;
 
 import java.util.List;
-import java.util.concurrent.*;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
-public class PhaseGraph extends Graph {
+public class LiGraph extends Graph {
 
     private final int D;
 
@@ -23,14 +24,14 @@ public class PhaseGraph extends Graph {
 
     private ConcurrentHashMap<Integer, ConcurrentLinkedQueue<Message>> lst;
 
-    public PhaseGraph(int size, int D) {
+    public LiGraph(int size, int D) {
         super(size);
         this.D = D;
     }
 
     @Override
     public GraphNode createGraphNode(int val) {
-        PhaseGraphNode graphNode = new PhaseGraphNode(this, val, D);
+        LiGraphNode graphNode = new LiGraphNode(this, val, D);
         if (lst == null) {
             lst = new ConcurrentHashMap<>();
         }
@@ -41,11 +42,11 @@ public class PhaseGraph extends Graph {
 
     @Override
     public void setPredSubGraphNode(int val, List<GraphNode> predecessors, List<GraphNode> successors) {
-        ((PhaseGraphNode) graphNodes[val]).setPredecessors(predecessors);
-        ((PhaseGraphNode) graphNodes[val]).setSuccessors(successors);
+        ((LiGraphNode) graphNodes[val]).setPredecessors(predecessors);
+        ((LiGraphNode) graphNodes[val]).setSuccessors(successors);
 
         predecessors.forEach(p ->
-            ((PhaseGraphNode) graphNodes[val]).getRecCount().put(p.getValue(), 0)
+            ((LiGraphNode) graphNodes[val]).getRecCount().put(p.getValue(), 0)
         );
     }
 

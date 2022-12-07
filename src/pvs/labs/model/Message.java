@@ -1,4 +1,4 @@
-package pvs.labs.lab3.model;
+package pvs.labs.model;
 
 import pvs.labs.model.GraphNode;
 
